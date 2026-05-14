@@ -12,6 +12,7 @@ const DEFAULT_PANEL_WIDTH = 340;
 
 export default function Home() {
   const [panelWidth, setPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
+  const [activeFlagId, setActiveFlagId] = useState<string | null>(null);
   const dragging = useRef(false);
 
   const handleMouseDown = useCallback(() => {
@@ -42,14 +43,14 @@ export default function Home() {
       <TopNav documentTitle={baaDocument.title} />
       <div className="flex flex-1 overflow-hidden">
         <main className="flex-1 overflow-y-auto">
-          <DocumentViewer document={baaDocument} />
+          <DocumentViewer document={baaDocument} activeFlagId={activeFlagId} />
         </main>
         <ResizeHandle onMouseDown={handleMouseDown} />
         <aside
           style={{ width: panelWidth }}
           className="shrink-0 bg-white"
         >
-          <SidePanel />
+          <SidePanel onFlagSelect={setActiveFlagId} />
         </aside>
       </div>
     </div>

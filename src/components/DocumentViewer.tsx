@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import type {
   LegalDocument,
   DocumentSection,
@@ -7,7 +8,7 @@ import type {
   Paragraph,
 } from "@/types/document";
 
-function renderFlaggedText(paragraph: Paragraph) {
+function renderFlaggedText(paragraph: Paragraph, activeFlagId: string | null) {
   const { text, flags } = paragraph;
   if (flags.length === 0) return text;
 
@@ -19,12 +20,17 @@ function renderFlaggedText(paragraph: Paragraph) {
     if (f.startOffset > cursor) {
       nodes.push(text.slice(cursor, f.startOffset));
     }
+    const isActive = f.id === activeFlagId;
     nodes.push(
       <mark
         key={f.id}
         data-flag-id={f.id}
         title={f.label}
-        className="cursor-pointer bg-pink-200/80 px-0.5"
+        className={`cursor-pointer px-0.5 transition-all ${
+          isActive
+            ? "bg-pink-300 ring-2 ring-blue-600"
+            : "bg-pink-200/80"
+        }`}
       >
         {text.slice(f.startOffset, f.endOffset)}
       </mark>,
@@ -39,15 +45,27 @@ function renderFlaggedText(paragraph: Paragraph) {
   return nodes;
 }
 
-function ParagraphBlock({ paragraph }: { paragraph: Paragraph }) {
+function ParagraphBlock({
+  paragraph,
+  activeFlagId,
+}: {
+  paragraph: Paragraph;
+  activeFlagId: string | null;
+}) {
   return (
     <p className="text-sm leading-7 text-gray-800">
-      {renderFlaggedText(paragraph)}
+      {renderFlaggedText(paragraph, activeFlagId)}
     </p>
   );
 }
 
-function SubsectionBlock({ subsection }: { subsection: Subsection }) {
+function SubsectionBlock({
+  subsection,
+  activeFlagId,
+}: {
+  subsection: Subsection;
+  activeFlagId: string | null;
+}) {
   return (
     <div className="flex gap-3 pl-8">
       <span className="shrink-0 text-sm leading-7 text-gray-800">
@@ -55,14 +73,20 @@ function SubsectionBlock({ subsection }: { subsection: Subsection }) {
       </span>
       <div className="flex flex-col gap-4">
         {subsection.paragraphs.map((p) => (
-          <ParagraphBlock key={p.id} paragraph={p} />
+          <ParagraphBlock key={p.id} paragraph={p} activeFlagId={activeFlagId} />
         ))}
       </div>
     </div>
   );
 }
 
-function SectionBlock({ section }: { section: DocumentSection }) {
+function SectionBlock({
+  section,
+  activeFlagId,
+}: {
+  section: DocumentSection;
+  activeFlagId: string | null;
+}) {
   const heading =
     section.number !== null
       ? `${section.number}. ${section.title}`
@@ -74,16 +98,30 @@ function SectionBlock({ section }: { section: DocumentSection }) {
         {heading}
       </h2>
       {section.paragraphs.map((p) => (
-        <ParagraphBlock key={p.id} paragraph={p} />
+        <ParagraphBlock key={p.id} paragraph={p} activeFlagId={activeFlagId} />
       ))}
       {section.subsections.map((sub) => (
-        <SubsectionBlock key={sub.id} subsection={sub} />
+        <SubsectionBlock key={sub.id} subsection={sub} activeFlagId={activeFlagId} />
       ))}
     </section>
   );
 }
 
-export function DocumentViewer({ document }: { document: LegalDocument }) {
+export function DocumentViewer({
+  document,
+  activeFlagId = null,
+}: {
+  document: LegalDocument;
+  activeFlagId?: string | null;
+}) {
+  useEffect(() => {
+    if (!activeFlagId) return;
+    const el = window.document.querySelector(
+      `[data-flag-id="${activeFlagId}"]`,
+    );
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [activeFlagId]);
+
   return (
     <div className="h-full bg-white px-20 py-16">
       <div className="mx-auto max-w-3xl">
@@ -99,7 +137,7 @@ export function DocumentViewer({ document }: { document: LegalDocument }) {
 
         <div className="flex flex-col gap-8">
           {document.sections.map((section) => (
-            <SectionBlock key={section.id} section={section} />
+            <SectionBlock key={section.id} section={section} activeFlagId={activeFlagId} />
           ))}
         </div>
       </div>

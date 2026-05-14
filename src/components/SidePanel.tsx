@@ -2,13 +2,18 @@
 
 import { useState } from "react";
 import { BookOpen, MessageSquare, GripVertical } from "lucide-react";
+import { PlaybookPanel } from "./playbook/PlaybookPanel";
 
 const tabs = [
   { id: "playbook" as const, label: "Playbook", icon: BookOpen },
   { id: "composer" as const, label: "Composer", icon: MessageSquare },
 ];
 
-export function SidePanel() {
+export function SidePanel({
+  onFlagSelect,
+}: {
+  onFlagSelect: (flagId: string | null) => void;
+}) {
   const [activeTab, setActiveTab] = useState<"playbook" | "composer">("playbook");
 
   return (
@@ -36,13 +41,15 @@ export function SidePanel() {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
-        <p className="text-xs text-gray-400">
-          {activeTab === "playbook"
-            ? "Run a playbook to analyze this document"
-            : "Ask a question about this document"}
-        </p>
-      </div>
+      {activeTab === "playbook" ? (
+        <PlaybookPanel onFlagSelect={onFlagSelect} />
+      ) : (
+        <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
+          <p className="text-xs text-gray-400">
+            Ask a question about this document
+          </p>
+        </div>
+      )}
     </div>
   );
 }
