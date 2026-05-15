@@ -1,4 +1,3 @@
-"use client";
 
 import { useState } from "react";
 import {
@@ -42,7 +41,7 @@ export function RunPlaybookDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton={false} className="sm:max-w-md">
+      <DialogContent showCloseButton={false} className="max-w-[calc(100%-2rem)]">
         <DialogHeader>
           <DialogTitle>Run a playbook</DialogTitle>
           <DialogDescription>

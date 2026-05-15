@@ -1,4 +1,3 @@
-"use client";
 
 import { ChevronRight } from "lucide-react";
 import type { Playbook } from "@/types/playbook";
@@ -20,7 +19,7 @@ export function PlaybookSelector({
           <li key={pb.id}>
             <button
               onClick={() => onSelect(pb)}
-              className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50"
+              className="flex w-full items-center justify-between px-4 py-2.5 text-left text-xs text-gray-700 transition-colors hover:bg-gray-50"
             >
               {pb.name}
               <ChevronRight className="size-3.5 text-gray-400" />

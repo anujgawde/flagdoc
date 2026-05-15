@@ -7,6 +7,7 @@ export interface PlaybookCheck {
   flagId: string | null;
   issue: string;
   suggestedFix: string;
+  reasoning: string;
 }
 
 export interface Playbook {
