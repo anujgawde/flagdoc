@@ -30,41 +30,63 @@ export function CheckDetail({
       <ScrollArea className="flex-1">
         <div className="flex flex-col gap-4 px-4 py-3">
           <section className="flex flex-col gap-1.5">
-            <h4 className="text-xs font-semibold text-gray-900">Issue</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+              Issue
+            </h4>
             <p className="text-xs leading-relaxed text-gray-600">
               {check.issue}
             </p>
           </section>
 
           <section className="flex flex-col gap-1.5">
-            <h4 className="text-xs font-semibold text-gray-900">
+            <h4 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
               Suggested fix
             </h4>
-            <p className="text-xs leading-relaxed text-gray-600">
-              {check.suggestedFix}
-            </p>
+            <div className="flex gap-2">
+              <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-[10px] font-semibold text-white">
+                R
+              </div>
+              <div className="flex-1">
+                <span className="text-[11px] font-medium text-gray-900">
+                  Rona Sulak...
+                </span>
+                <p className="mt-1 text-xs leading-relaxed text-gray-600">
+                  {check.suggestedFix}
+                </p>
+              </div>
+            </div>
           </section>
 
           <div className="flex items-center gap-2">
             <button
               onClick={onApply}
-              className="flex items-center gap-1.5 rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-emerald-700"
+              className="flex items-center gap-1.5 rounded-full p-1.5 text-emerald-600 transition-colors hover:bg-emerald-50"
+              title="Apply"
             >
-              <Check className="size-3" />
-              Apply
+              <div className="flex size-6 items-center justify-center rounded-full bg-emerald-100">
+                <Check className="size-3.5 text-emerald-600" />
+              </div>
             </button>
             <button
               onClick={onClose}
-              className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50"
+              className="flex items-center gap-1.5 rounded-full p-1.5 text-red-600 transition-colors hover:bg-red-50"
+              title="Reject"
             >
-              <X className="size-3" />
+              <div className="flex size-6 items-center justify-center rounded-full bg-red-100">
+                <X className="size-3.5 text-red-600" />
+              </div>
             </button>
           </div>
 
           {check.reasoning && (
-            <p className="text-xs leading-relaxed text-gray-500">
-              {check.reasoning}
-            </p>
+            <section className="flex flex-col gap-1.5">
+              <h4 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+                Reasoning
+              </h4>
+              <p className="text-xs leading-relaxed text-gray-500">
+                {check.reasoning}
+              </p>
+            </section>
           )}
         </div>
       </ScrollArea>

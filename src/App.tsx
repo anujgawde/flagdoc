@@ -12,7 +12,7 @@ export function App() {
   const [activeTab, setActiveTab] = useState<"playbook" | "composer">("playbook");
 
   return (
-    <div className="flex h-screen w-full flex-col bg-white">
+    <div className="flex h-full w-full flex-col bg-white">
       <header className="flex shrink-0 items-center justify-between border-b border-gray-200 px-4 py-2.5">
         <span className="text-sm font-semibold text-gray-900">Pincites</span>
         <button className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
@@ -44,11 +44,12 @@ export function App() {
       </div>
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        {activeTab === "playbook" ? (
+        <div className={`flex flex-1 flex-col overflow-hidden ${activeTab !== "playbook" ? "hidden" : ""}`}>
           <PlaybookPanel onFlagSelect={() => {}} />
-        ) : (
+        </div>
+        <div className={`flex flex-1 flex-col overflow-hidden ${activeTab !== "composer" ? "hidden" : ""}`}>
           <ComposerPanel />
-        )}
+        </div>
       </div>
     </div>
   );

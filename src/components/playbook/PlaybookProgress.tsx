@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { ArrowLeft } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -50,6 +49,7 @@ export function PlaybookProgress({
   }
 
   const visible = checks.slice(0, revealedCount);
+  const progress = checks.length > 0 ? (revealedCount / checks.length) * 100 : 0;
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
@@ -61,6 +61,20 @@ export function PlaybookProgress({
           </Button>
         )}
       </div>
+
+      {phase === "running" && (
+        <div className="px-4 py-2">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200">
+            <div
+              className="h-full rounded-full bg-blue-600 transition-all duration-300 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <p className="mt-1 text-[10px] text-gray-400">
+            Analyzing… {revealedCount} of {checks.length} checks
+          </p>
+        </div>
+      )}
 
       {phase === "complete" && <BoundsResults checks={checks} />}
 

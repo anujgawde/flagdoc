@@ -2,7 +2,11 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { WordSimulator } from "./components/WordSimulator";
+import { DocumentContextProvider } from "./providers/DocumentProvider";
+import { MockDocumentProvider } from "./providers/MockProvider";
 import "./globals.css";
+
+const mockProvider = new MockDocumentProvider();
 
 Office.onReady((info) => {
   const container = document.getElementById("root");
@@ -13,13 +17,15 @@ Office.onReady((info) => {
 
   root.render(
     <React.StrictMode>
-      {isInsideWord ? (
-        <App />
-      ) : (
-        <WordSimulator>
+      <DocumentContextProvider value={mockProvider}>
+        {isInsideWord ? (
           <App />
-        </WordSimulator>
-      )}
+        ) : (
+          <WordSimulator provider={mockProvider}>
+            <App />
+          </WordSimulator>
+        )}
+      </DocumentContextProvider>
     </React.StrictMode>,
   );
 });
